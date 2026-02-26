@@ -1,5 +1,5 @@
 {
-  "name": "orm",
+  "name": "mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -11,9 +11,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "mysql2": "^3.16.2",
-    "sequelize": "^6.37.7"
+    "mongodb": "^7.1.0"
   }
 }
