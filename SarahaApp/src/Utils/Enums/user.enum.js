@@ -9,12 +9,12 @@ export const providerEnum = {
 };
 
 export const roleEnum = {
-  Admain: "Admain",
+  Admin: "Admin",
   User: "User",
 };
 
 export const signatureEnum = {
-  Admain: "Admain",
+  Admin: "Admin",
   User: "User",
 };
 

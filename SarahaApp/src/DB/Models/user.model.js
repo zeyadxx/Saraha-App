@@ -7,16 +7,16 @@ import {
 
 const userSchema = new Schema(
   {
-    fristName: {
+    firstName: {
       type: String,
-      required: [true, "FristName is Required"],
-      minLength: 2,
+      required: [true, "FirstName is Required"],
+      minLength: 3,
       maxLength: 25,
     },
     lastName: {
       type: String,
       required: [true, "lastName is Required"],
-      minLength: 2,
+      minLength: 3,
       maxLength: 25,
     },
     email: {
@@ -45,9 +45,18 @@ const userSchema = new Schema(
       type: String,
       enum: Object.values(providerEnum),
     },
-    confirmEmail: Date,
+    confirmEmail: Boolean,
     profilePic: String,
+    otp: String,
+    otpExpiration: { type: Date },
+    countOTP: { type: Number, default: 0 },
+
+    freezedAt: Date,
+    freezedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    restoreAt: Date,
+    restoreBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
+
   {
     timestamps: true,
     toJSON: { virtuals: true },

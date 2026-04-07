@@ -33,7 +33,7 @@ export const compareHash = async ({
       match = await compare(plainText, cipherText);
       break;
     case hashEnum.Argon:
-      hashResult = await argon2.verify(cipherText, plainText);
+      match = await argon2.verify(cipherText, plainText);
     default:
       match = await compare(plainText, cipherText);
       break;

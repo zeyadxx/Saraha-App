@@ -11,14 +11,12 @@ export const errorResponse = ({
   throw error;
 };
 
-
-export const BadRequestException = (
+export const BadRequestException = ({
   message = "BadRequest Exception",
   extra = undefined,
-) => {
+}) => {
   return errorResponse({ message, status: 400, extra });
 };
-
 
 export const ConflictException = (
   message = "Conflict Exception",
@@ -27,14 +25,12 @@ export const ConflictException = (
   return errorResponse({ message, status: 409, extra });
 };
 
-
 export const UnauthorizedException = (
   message = "Unauthorized Exception",
   extra = undefined,
 ) => {
   return errorResponse({ message, status: 401, extra });
 };
-
 
 export const NotFoundException = (
   message = "NotFound Exception",
@@ -58,8 +54,9 @@ export const InternalServerException = (
 };
 
 export const GlobleErrorHandler = (error, req, res, next) => {
-  const status =error.status ?? 500
+  const status = error.status ?? 500;
+  
   res
     .status(status)
-    .json({ message: error.message, stack: error.stack });
+    .json({ message: error.message, stack: error.stack, extra: error.extra });
 };

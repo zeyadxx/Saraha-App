@@ -2,11 +2,9 @@ import jwt from "jsonwebtoken";
 import {
   REFRESH_TOKEN_ADMIN_SECRET_KEY,
   REFRESH_TOKEN_EXPIRE_TIME,
-  REFRESH_TOKEN_MANAGER_SECRET_KEY,
   REFRESH_TOKEN_USER_SECRET_KEY,
   TOKEN_ADMIN_SECRET_KEY,
   TOKEN_EXPIRE_TIME,
-  TOKEN_MANAGER_SECRET_KEY,
   TOKEN_SECRET_KEY,
   TOKEN_USER_SECRET_KEY,
 } from "../../../config/config.service.js";
@@ -36,7 +34,7 @@ export const getSignature = ({ signatureLevel = signatureEnum.User }) => {
         (signature.refreshSignature = REFRESH_TOKEN_USER_SECRET_KEY));
       break;
 
-    case signatureEnum.Admain:
+    case signatureEnum.Admin:
       ((signature.accessSignature = TOKEN_ADMIN_SECRET_KEY),
         (signature.refreshSignature = REFRESH_TOKEN_ADMIN_SECRET_KEY));
       break;
@@ -51,8 +49,8 @@ export const getSignature = ({ signatureLevel = signatureEnum.User }) => {
 
 export const getLoginCredientials = async (user) => {
   const signature = await getSignature({
-    signatureLevel: (user.role == roleEnum.Admain
-      ? signatureEnum.Admain
+    signatureLevel: (user.role == roleEnum.Admin
+      ? signatureEnum.Admin
       : signatureEnum.User),
   });
   

@@ -1,3 +1,5 @@
+import { model } from "mongoose";
+
 export const find = async ({
   model,
   filter = {},
@@ -53,3 +55,46 @@ export const findById = async ({ id, model, select = "", options = {} }) => {
   if (options?.lean) doc.lean(options.lean);
   return await doc.exec();
 };
+
+export const findOneAndUpdate = async ({
+  model,
+  filter = {},
+  update = {},
+  options,
+} = {}) => {
+  return await model.findOneAndUpdate(
+    filter,
+    { ...update, $inc: { __v: 1 } },
+    {
+      runValidators: true,
+      new: true,
+      ...options,
+    },
+  );
+};
+
+export const deleteOne = async ({
+  filter,
+  model
+
+}) => {
+  return await model.deleteOne(filter || {});
+}
+
+export const deleteMany = async ({
+  filter,
+  model
+
+}) => {
+  return await model.deleteMany(filter || {});
+}
+
+export const findOneAndDelete = async ({
+  filter,
+  model
+
+} = {}) => {
+  return await model.findOneAndDelete(
+    filter || {},
+  );
+}
