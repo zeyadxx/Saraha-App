@@ -33,7 +33,6 @@ export const validation = (schema) => {
       }
     }
     return next();
-
   };
 };
 
@@ -60,7 +59,11 @@ export const generalFields = {
   gender: joi.string().valid(...Object.values(genderEnum)),
   provider: joi.string().valid(...Object.values(providerEnum)),
   id: joi.string().custom((value, helper) => {
-    return new mongoose.Types.ObjectId(value) || helper.message("invalid ObjectId Format!");
+    return (
+      new mongoose.Types.ObjectId(value) ||
+      helper.message("invalid ObjectId Format!")
+    );
   }),
   otp: joi.string().pattern(/^[0-9]{6}$/),
+  content: joi.string().min(3).max(500),
 };

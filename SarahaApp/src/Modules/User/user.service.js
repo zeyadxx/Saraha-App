@@ -54,8 +54,7 @@ export const updatePassword = async (req, res) => {
   if (!matched)
     throw err.BadRequestException({ message: "the old password incorrect" });
 
-  if (newPassword != confirmPassword)
-    throw err.BadRequestException({ message: "mismatch password" });
+ 
   const hashPassword = await generetHash({
     plainText: newPassword,
     algo: hashEnum.Argon,

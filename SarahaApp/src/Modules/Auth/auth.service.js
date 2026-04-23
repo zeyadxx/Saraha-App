@@ -6,9 +6,10 @@ import { encrypt } from "../../Utils/security/encryption.js";
 import { compareHash, generetHash } from "../../Utils/security/hash.js";
 import { getLoginCredientials } from "../../Utils/tokens/token.js";
 import { OAuth2Client } from "google-auth-library";
-import { providerEnum } from "../../Utils/Enums/user.enum.js";
+import { LogoutEnum, providerEnum } from "../../Utils/Enums/user.enum.js";
 import { generateOTP } from "./../../Utils/generate_otp.js";
 import { emailEvent } from "../../Utils/events/email.events.js";
+import TokenModel from "../../DB/Models/token.model.js";
 //---- SIGNUP-----
 export const signup = async (req, res) => {
   // check user exist
@@ -67,7 +68,7 @@ export const login = async (req, res) => {
   //check email exist
   const user = await dbService.findOne({
     model: UserModel,
-    filter: { email, confirmEmail: true,freezedBy: { $exists: false } },
+    filter: { email, confirmEmail: true, freezedBy: { $exists: false } },
   });
 
   if (!user) {
@@ -167,6 +168,31 @@ export const loginWithGoogle = async (req, res) => {
   }
 };
 
+export const logout = async (req, res) => {
+  const { flag } = req.body;
+
+  switch (flag) {
+    case LogoutEnum.logout:
+      const blockToken = await dbService.create({
+        model: TokenModel,
+        data: {
+          jti: req.decoded.jti,
+          userId: req.user._id,
+          expiresIn: Date.now() - req.decoded.exp,
+        },
+      });
+      return succesResponse({ res, message: "logout successful", status: 201 });
+
+    case LogoutEnum.LogoutFromAll:
+      await dbService.updateOne({
+        model: UserModel,
+        filter: { _id: req.user._id },
+        update: { changeCredentialsTime: Date.now() },
+      });
+      return succesResponse({ res, message: "logout successful", status: 200 });
+  }
+};
+
 export const confirmEmail = async (req, res) => {
   const { email, otp } = req.body;
   const user = await dbService.findOne({ model: UserModel, filter: { email } });
@@ -236,8 +262,6 @@ export const resendOTP = async (req, res) => {
   });
   succesResponse({ res, message: "the OTP resend successful" });
 };
-
-
 
 export const forgetPassword = async (req, res) => {
   const { email } = req.body;

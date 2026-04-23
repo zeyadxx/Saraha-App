@@ -22,3 +22,8 @@ export const tokenEnum = {
   Access: "Access",
   Refresh: "Refresh",
 };
+
+export const LogoutEnum = {
+  LogoutFromAll: "LogoutFromAll",
+  logout: "logout",
+};

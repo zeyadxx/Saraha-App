@@ -47,6 +47,7 @@ const userSchema = new Schema(
     },
     confirmEmail: Boolean,
     profilePic: String,
+    changeCredentialsTime:Date,
     otp: String,
     otpExpiration: { type: Date },
     countOTP: { type: Number, default: 0 },

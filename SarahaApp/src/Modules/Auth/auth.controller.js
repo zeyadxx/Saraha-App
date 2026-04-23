@@ -7,29 +7,26 @@ import { validation } from "../../Middlewares/validation.middleware.js";
 
 const router = Router();
 
-router.post(
-  "/signup",
+router.post( "/signup",
   validation(authValidation.signupSchema),
   authService.signup,
 );
-router.post(
-  "/login",
+router.post( "/login",
   validation(authValidation.loginSchema),
   authService.login,
 );
-router.post(
-  "/refresh-Token",
+router.post("/refresh-Token",
   authentication({ tokenType: tokenEnum.Refresh }),
   authService.refreshToken,
 );
-router.post(
-  "/social-login",
+router.post("/social-login",
   validation(authValidation.socialLogin),
   authService.loginWithGoogle,
 );
+router.post("/logout",authentication({tokenType:tokenEnum.Access}),authService.logout)
 
-router.patch(
-  "/confirm-Email",
+
+router.patch( "/confirm-Email",
   validation(authValidation.confirmEmail),
   authService.confirmEmail,
 );
@@ -43,6 +40,7 @@ router.patch(
 
 
 router.patch("/forgetPassword", authService.forgetPassword);
+
 router.patch(
   "/resetPassword",
   validation(authValidation.resetPassword),

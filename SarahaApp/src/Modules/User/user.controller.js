@@ -13,8 +13,8 @@ const router = Router();
 
 router.get(
   "/getProfile",
-  authentication({}),
-  authorization([roleEnum.Admain]),
+  authentication({tokenType:tokenEnum.Accesss}),
+  authorization([roleEnum.Admin]),
   userService.getProfile,
 );
 

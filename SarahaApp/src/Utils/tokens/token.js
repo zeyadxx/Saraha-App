@@ -9,13 +9,14 @@ import {
   TOKEN_USER_SECRET_KEY,
 } from "../../../config/config.service.js";
 import { roleEnum, signatureEnum } from "../Enums/user.enum.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const generateToken = ({
   payload,
   secrtKey = TOKEN_SECRET_KEY,
   option = {
     expiresIn: TOKEN_EXPIRE_TIME,
-    noTimestamp: true,
+    jwtid: uuidv4(),
     issuer: "http://localhost:3000",
   },
 }) => {
@@ -49,11 +50,10 @@ export const getSignature = ({ signatureLevel = signatureEnum.User }) => {
 
 export const getLoginCredientials = async (user) => {
   const signature = await getSignature({
-    signatureLevel: (user.role == roleEnum.Admin
-      ? signatureEnum.Admin
-      : signatureEnum.User),
+    signatureLevel:
+      user.role == roleEnum.Admin ? signatureEnum.Admin : signatureEnum.User,
   });
-  
+
   const accessToken = generateToken({
     payload: { _id: user._id },
     secrtKey: signature.accessSignature,
